@@ -16,6 +16,7 @@ dependencies:
   uuid: ^4.2.1
   path: ^1.8.2
   intl: ^0.20.1
+  logging: ^1.2.0
 
 dev_dependencies:
   flutter_test:

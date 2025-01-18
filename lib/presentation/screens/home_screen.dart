@@ -6,6 +6,7 @@ import '../widgets/routine_check_list.dart';
 import '../widgets/daily_progress.dart';
 import '../widgets/add_routine_dialog.dart';
 import '../providers/database_providers.dart';
+import 'calendar_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -31,7 +32,7 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class _HomeScreenContent extends ConsumerWidget {
-  const _HomeScreenContent({Key? key}) : super(key: key);
+  const _HomeScreenContent();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,12 +45,12 @@ class _HomeScreenContent extends ConsumerWidget {
         title: const Text('일일 루틴'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              ref.refresh(routinesProvider);
-              ref.refresh(dailyChecksProvider);
-              ref.refresh(dailyProgressProvider);
-            },
+            icon: const Icon(Icons.calendar_month),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CalendarScreen(),
+              ),
+            ),
           ),
         ],
       ),
@@ -84,8 +85,10 @@ class _HomeScreenContent extends ConsumerWidget {
                     routines: routines,
                     checks: checks,
                   ),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (error, _) => Center(child: Text('체크리스트 로딩 오류: $error')),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, _) =>
+                      Center(child: Text('체크리스트 로딩 오류: $error')),
                 ),
               ),
             ],
@@ -109,4 +112,4 @@ class _HomeScreenContent extends ConsumerWidget {
       builder: (context) => const AddRoutineDialog(),
     );
   }
-} 
+}

@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'dart:io';
@@ -68,4 +67,4 @@ class DatabaseHelper {
       'CREATE INDEX idx_routine_checks_routine_id ON routine_checks(routine_id)',
     );
   }
-} 
+}

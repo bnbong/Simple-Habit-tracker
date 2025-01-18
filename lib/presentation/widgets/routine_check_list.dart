@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import '../../domain/models/routine.dart';
 import '../../domain/models/routine_check.dart';
 import '../providers/routine_check_providers.dart';
@@ -7,6 +8,7 @@ import '../providers/routine_check_providers.dart';
 class RoutineCheckList extends ConsumerWidget {
   final List<Routine> routines;
   final List<RoutineCheck> checks;
+  static final _logger = Logger('RoutineCheckList');
 
   const RoutineCheckList({
     super.key,
@@ -16,8 +18,9 @@ class RoutineCheckList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('Building RoutineCheckList with ${routines.length} routines and ${checks.length} checks');
-    
+    _logger.info(
+        'Building RoutineCheckList with ${routines.length} routines and ${checks.length} checks');
+
     return ListView.builder(
       itemCount: routines.length,
       itemBuilder: (context, index) {
@@ -25,7 +28,7 @@ class RoutineCheckList extends ConsumerWidget {
         final check = checks.firstWhere(
           (check) => check.routineId == routine.id,
           orElse: () {
-            print('No check found for routine: ${routine.id}');
+            _logger.warning('No check found for routine: ${routine.id}');
             return RoutineCheck(
               id: '',
               routineId: routine.id,
@@ -37,7 +40,8 @@ class RoutineCheckList extends ConsumerWidget {
 
         return CheckboxListTile(
           title: Text(routine.name),
-          subtitle: routine.description != null ? Text(routine.description!) : null,
+          subtitle:
+              routine.description != null ? Text(routine.description!) : null,
           value: check.isCompleted,
           onChanged: (value) {
             ref.read(dailyChecksProvider.notifier).toggleCheck(routine.id);
@@ -46,4 +50,4 @@ class RoutineCheckList extends ConsumerWidget {
       },
     );
   }
-} 
+}
